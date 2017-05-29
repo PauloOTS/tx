@@ -101,3 +101,6 @@ ENV/
 # qtBuilder
 
 /client/build/
+
+# db 
+server/tx.db
