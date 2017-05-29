@@ -3,6 +3,8 @@ import tx.db
 import tx.model
 import tx.control
 
+import json
+
 tx.db.base.metadata.create_all(tx.db.engine)
 app = flask.Flask(__name__)
 
@@ -14,6 +16,15 @@ def not_found(error):
                     'type' : 'error',
                     'msg': 'Not found'
                 }), 404)
+
+@app.errorhandler(400)
+def not_found(error):
+    return flask.make_response(
+            flask.jsonify(
+                {
+                    'type' : 'error',
+                    'msg': 'Bad request'
+                }), 400)
 
 def txjson(obj):
     if isinstance(obj, list):
@@ -69,6 +80,58 @@ def clients(cpf):
         return txerror('Cannot found client with cpf %d' % cpf)
 
     return flask.jsonify(txjson(client))
+
+@app.route('/withdraw', methods=['PUT'])
+def withdraw():
+    withdraw_request = json.loads(flask.request.data)
+
+    if( not 'type' in withdraw_request or
+        withdraw_request['type'] != 'withdraw' or
+        not 'account_id' in withdraw_request or
+        not 'value' in  withdraw_request or
+        not 'withdraw_method' in withdraw_request):
+        flask.abort(400)
+
+    withdraw_method = withdraw_request['withdraw_method']
+    withdraw_value  = withdraw_request['value']
+
+    account = tx.control.get_account(withdraw_request['account_id'])
+
+    if account == None:
+        return txerror('Cannot found account with number %d' % withdraw_request['account_id'])
+
+    try:
+        tx.control.withdraw(account, withdraw_value, withdraw_method)
+        return flask.make_response(flask.jsonify(
+                { 'status' : 'Accepted' }), 202 )
+    except tx.control.ControlError as error:
+        return txerror(error.msg, error.code)
+
+@app.route('/deposit', methods=['PUT'])
+def deposit():
+    deposit_request = json.loads(flask.request.get_data())
+
+    if( not 'type' in deposit_request or
+        deposit_request['type'] != 'deposit' or
+        not 'account_id' in deposit_request or
+        not 'value' in deposit_request or
+        not 'deposit_method' in deposit_request):
+        flask.abort(400)
+
+    deposit_value = deposit_request['value']
+    deposit_method = deposit_request['deposit_method']
+
+    account = tx.control.get_account(deposit_request['account_id'])
+
+    if account == None:
+        return txerror('Cannot found account with number %d' % deposit_request['account_id'])
+
+    try:
+        tx.control.deposit(account, deposit_value, deposit_method)
+        return flask.make_response(flask.jsonify(
+                { 'status' : 'Accepted' }), 202 )
+    except tx.control.ControlError as error:
+        return txerror(error.msg, error.code)
 
 if __name__ == '__main__':
     app.run(debug=True)

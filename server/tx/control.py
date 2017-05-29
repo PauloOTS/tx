@@ -7,6 +7,12 @@ import tx.model
 
 session = tx.db.newsession()
 
+class ControlError(BaseException):
+
+    def __init__(self, msg, code):
+        self.msg = msg
+        self.code = code
+
 ## get a account with the id `id`
  # @param id the number of the account
  #
@@ -43,4 +49,59 @@ def get_client(cpf):
               .filter(tx.model.Client.cpf == cpf)\
               .one_or_none()
     return client
+
+## Realize the withdraw of `value` in `account` using
+ # the savings or the current account specified by `method`
+ #
+ # @param account the model.Account to realize the withdraw
+ # @param value   the value of the withdraw
+ # @param method  must be 'saving' or 'current'
+def withdraw(account, value, method):
+    if value <= 0:
+        raise ControlError('The withdraw value cannot be 0 or less', 400)
+
+    if method == 'current':
+        if value > account.balance:
+            raise ControlError(
+                    'The account %d does not have the money to withdraw'
+                    % account.id, 400)
+        else:
+            account.balance -= value
+            session.commit()
+
+    elif method == 'saving':
+        if value > account.saving:
+            raise ControlError(
+                    'The account %d does not have the money to withdraw'
+                    % account.id, 400)
+        else:
+            account.saving -= value
+            session.commit()
+
+    else:
+        raise ControlError(
+                'The withdraw method must be saving or current', 400)
+
+
+## Realize the withdraw of `value` in `account` using
+ # the savings or the current account specified by `method`
+ #
+ # @param account the model.Account to realize the withdraw
+ # @param value   the value of the withdraw
+ # @param method  must be 'saving' or 'current'
+def deposit(account, value, method):
+    if value <= 0:
+        raise ControlError('The deposit value cannot be 0 or less', 400)
+
+    if method == 'current':
+        account.balance += value
+        session.commit()
+
+    elif method == 'saving':
+        account.saving += value
+        session.commit()
+
+    else:
+        raise ControlError(
+                'The deposit method must be saving or current', 400)
 

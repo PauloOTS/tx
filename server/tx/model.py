@@ -71,5 +71,3 @@ class Account(db.base):
             'balance'   : self.balance,
             'saving'    : self.saving
         }
-
-
