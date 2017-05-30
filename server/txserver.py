@@ -77,13 +77,13 @@ def clients(cpf):
     client = tx.control.get_client(cpf)
 
     if client == None:
-        return txerror('Cannot found client with cpf %d' % cpf)
+        return txerror('Cannot found client with cpf %s' % cpf)
 
     return flask.jsonify(txjson(client))
 
 @app.route('/withdraw', methods=['PUT'])
 def withdraw():
-    withdraw_request = json.loads(flask.request.data)
+    withdraw_request = json.loads(flask.request.get_data())
 
     if( not 'type' in withdraw_request or
         withdraw_request['type'] != 'withdraw' or
@@ -124,10 +124,54 @@ def deposit():
     account = tx.control.get_account(deposit_request['account_id'])
 
     if account == None:
-        return txerror('Cannot found account with number %d' % deposit_request['account_id'])
+        return txerror('Cannot found account with number %d'
+                        % deposit_request['account_id'])
 
     try:
         tx.control.deposit(account, deposit_value, deposit_method)
+        return flask.make_response(flask.jsonify(
+                { 'status' : 'Accepted' }), 202 )
+    except tx.control.ControlError as error:
+        return txerror(error.msg, error.code)
+
+@app.route('/transaction', methods=['POST'])
+def transaction():
+    transaction_request = json.loads(flask.request.get_data())
+
+    if( not 'type' in transaction_request or
+        transaction_request['type'] != 'transaction' or
+        not 'sender_id' in transaction_request or
+        not 'receiver_id' in transaction_request or
+        not 'sender_method' in transaction_request or
+        not 'receiver_method' in transaction_request or
+        not 'value' in transaction_request):
+        flask.abort(400)
+
+    sender_id = transaction_request['sender_id']
+    receiver_id = transaction_request['receiver_id']
+    sender_method = transaction_request['sender_method']
+    receiver_method = transaction_request['receiver_method']
+    value = transaction_request['value']
+
+    sender_account = tx.control.get_account(sender_id)
+    receiver_account = tx.control.get_account(receiver_id)
+
+    if sender_account == None:
+        return txerror('Cannot found account with number %d'
+                        % sender_id)
+
+    if receiver_account == None:
+        return txerror('Cannot found account with number %d'
+                        % receiver_id)
+
+    try:
+        tx.control.transaction(
+                sender_account,
+                receiver_account,
+                sender_method,
+                receiver_method,
+                value)
+
         return flask.make_response(flask.jsonify(
                 { 'status' : 'Accepted' }), 202 )
     except tx.control.ControlError as error:

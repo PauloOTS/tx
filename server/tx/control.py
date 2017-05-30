@@ -105,3 +105,35 @@ def deposit(account, value, method):
         raise ControlError(
                 'The deposit method must be saving or current', 400)
 
+
+## Realize a transaction from `sender` to `receiver` of value `value`
+ #
+def transaction(sender, receiver, sender_method, receiver_method, value):
+    if value <= 0:
+        raise ControlError('The transaction value cannot be 0 or less', 400)
+
+    if( (sender_method != 'saving' and
+        sender_method != 'current') or
+        (receiver_method != 'saving' and
+        receiver_method != 'current')):
+        raise ControlError(
+                'The transaction method must be saving or current', 400)
+
+    if sender_method == 'current':
+        sender_method = 'balance'
+    if receiver_method == 'current':
+        receiver_method = 'balance'
+
+    sender_amount = getattr(sender, sender_method)
+
+    if sender_amount < value:
+        raise ControlError(
+                'The account %d does not have the money to transact'
+                % sender.id, 400)
+
+    setattr(sender, sender_method, sender_amount - value)
+    setattr(receiver, receiver_method,
+            getattr(receiver, receiver_method) + value)
+
+    session.commit()
+
