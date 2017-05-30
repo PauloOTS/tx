@@ -6,6 +6,7 @@
 class Account
 {
 public:
+	Account();
 	Account(const int& id,
 		const QString& client_cpf,
 		const int& branch_id,

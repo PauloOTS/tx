@@ -9,6 +9,7 @@ class Account;
 class Client
 {
 public:
+	Client();
 	Client(const QString& cpf, const QString& name);
 	bool read(const QJsonObject& json);
 	bool write(QJsonObject& json) const;

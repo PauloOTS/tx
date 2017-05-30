@@ -3,6 +3,10 @@
 
 const QString Client::JSON_TYPE = "clients";
 
+Client::Client(){
+
+}
+
 Client::Client(const QString& cpf, const QString& name)
 {
 	this->cpf = cpf;

@@ -2,6 +2,10 @@
 
 const QString Account::JSON_TYPE = "accounts";
 
+Account::Account(){
+
+}
+
 Account::Account(const int &id,
 		const QString &client_cpf,
 		const int &branch_id,

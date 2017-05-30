@@ -26,10 +26,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += main.cpp\
         txclientview.cpp \
     client.cpp \
-    account.cpp
+    account.cpp \
+    deposit.cpp \
+    withdraw.cpp
 
 HEADERS  += txclientview.h \
     client.h \
-    account.h
+    account.h \
+    deposit.h \
+    withdraw.h
 
 FORMS    += txclientview.ui

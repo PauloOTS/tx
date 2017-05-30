@@ -3,6 +3,8 @@
 #include "client.h"
 #include <QJsonDocument>
 #include <QDebug>
+#include "withdraw.h"
+#include "deposit.h"
 
 int main(int argc, char *argv[])
 {
@@ -11,4 +13,5 @@ int main(int argc, char *argv[])
 	w.show();
 
 	return a.exec();
+
 }
