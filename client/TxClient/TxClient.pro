@@ -28,12 +28,14 @@ SOURCES += main.cpp\
     client.cpp \
     account.cpp \
     deposit.cpp \
-    withdraw.cpp
+    withdraw.cpp \
+    transaction.cpp
 
 HEADERS  += txclientview.h \
     client.h \
     account.h \
     deposit.h \
-    withdraw.h
+    withdraw.h \
+    transaction.h
 
 FORMS    += txclientview.ui
