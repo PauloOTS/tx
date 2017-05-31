@@ -9,7 +9,4 @@ fi
 SQL_PATH=.
 DB_PATH="$1"
 
-for sql in "${SQL_PATH}/"{clients.sql,banks.sql,branches.sql,accounts.sql}
-do
-	cat "${sql}" | sqlite3 "${DB_PATH}"
-done
+cat ${SQL_PATH}/{clients.sql,banks.sql,branches.sql,accounts.sql} | sqlite3 "${DB_PATH}"

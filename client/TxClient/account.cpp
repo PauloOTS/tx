@@ -53,3 +53,68 @@ bool Account::write(QJsonObject &json) const{
 
 	return true;
 }
+
+int Account::getId() const
+{
+    return id;
+}
+
+void Account::setId(int value)
+{
+    id = value;
+}
+
+QString Account::getClient_cpf() const
+{
+    return client_cpf;
+}
+
+void Account::setClient_cpf(const QString &value)
+{
+    client_cpf = value;
+}
+
+int Account::getBranch_id() const
+{
+    return branch_id;
+}
+
+void Account::setBranch_id(int value)
+{
+    branch_id = value;
+}
+
+int Account::getBank_id() const
+{
+    return bank_id;
+}
+
+void Account::setBank_id(int value)
+{
+    bank_id = value;
+}
+
+QString Account::getBank_name() const
+{
+    return bank_name;
+}
+
+void Account::setBank_name(const QString &value)
+{
+    bank_name = value;
+}
+
+double Account::getBalance() const
+{
+    return balance;
+}
+
+double Account::getSaving() const
+{
+    return saving;
+}
+
+void Account::setSaving(double value)
+{
+    saving = value;
+}

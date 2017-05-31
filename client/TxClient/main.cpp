@@ -1,10 +1,8 @@
 #include "txclientview.h"
 #include <QApplication>
-#include "client.h"
-#include <QJsonDocument>
 #include <QDebug>
-#include "withdraw.h"
-#include "deposit.h"
+
+#include "webservice.hpp"
 
 int main(int argc, char *argv[])
 {
