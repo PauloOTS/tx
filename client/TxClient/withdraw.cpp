@@ -26,7 +26,7 @@ bool Withdraw::read(QJsonObject &json){
 bool Withdraw::write(QJsonObject &json) const{
 
 	json["type"] = Withdraw::JSON_TYPE;
-	json["account_id;"] = this->account_id;
+	json["account_id"] = this->account_id;
 	json["value"] = this->value;
 	json["withdraw_method"] = this->withdraw_method;
 	return true;

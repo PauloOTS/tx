@@ -51,9 +51,24 @@ Client WebService::getClient(const QString& cpf)
 	return c;
 }
 
-std::string WebService::request(
-	const std::string &path,
-	const std::string &method)
+QString WebService::withdraw(const Withdraw &w)
+{
+	QJsonObject withdraw_request;
+	w.write(withdraw_request);
+
+	const std::string path = "/withdraw";
+	std::string j = jsonToStr(withdraw_request);
+	QJsonObject response = requestJson(
+				path,
+				"PUT",
+				j);
+
+	return response["status"].toString();
+}
+
+std::string WebService::request(const std::string &path,
+	const std::string &method,
+	const std::string &data)
 {
 	curlpp::Cleanup cleanup;
 
@@ -65,9 +80,19 @@ std::string WebService::request(
 			+ std::to_string(this->port)
 			+ path;
 
+
 	request.setOpt(new curlpp::options::CustomRequest(method));
 	request.setOpt(new curlpp::options::Url(url));
 	request.setOpt(new curlpp::options::WriteStream(&s));
+
+	std::istringstream sstream(data);
+
+	if(data.size()){
+		request.setOpt(new curlpp::options::ReadStream(&sstream));
+		request.setOpt(new curlpp::options::InfileSize(data.size()));
+		request.setOpt(new curlpp::options::Upload(true));
+	}
+
 	request.perform();
 
 	int code = curlpp::infos::ResponseCode::get(request);
@@ -88,9 +113,16 @@ QJsonObject WebService::strToJson(const std::string& s)
 	return QJsonDocument::fromJson(array).object();
 }
 
+std::string WebService::jsonToStr(const QJsonObject& j)
+{
+	QJsonDocument doc(j);
+	return QString(doc.toJson(QJsonDocument::Compact)).toStdString();
+}
+
 QJsonObject WebService::requestJson(
 	const std::string& path,
-	const std::string& method)
+	const std::string& method,
+	const std::string& data)
 {
-	return strToJson(request(path, method));
+	return strToJson(request(path, method, data));
 }

@@ -63,22 +63,26 @@ public:
 	/**
 	 * @brief Realize the withdraw method in the server
 	 * @param w The withdraw object that represents the method
+	 * @return A status message from the server
 	 */
-	//void withdraw(const Withdraw& w);
+	QString withdraw(const Withdraw& w);
 
 private:
 	std::string ip;
 	short port;
 
 	QJsonObject strToJson(const std::string& s);
+	std::string jsonToStr(const QJsonObject& j);
 
 	std::string request(
 		const std::string& url,
-		const std::string& method = "GET");
+		const std::string& method = "GET",
+		const std::string& data = std::string());
 
 	QJsonObject requestJson(
 		const std::string& path,
-		const std::string& method = "GET");
+		const std::string& method = "GET",
+		const std::string& data = std::string());
 };
 
 #endif // WEBSERVICE_HPP
