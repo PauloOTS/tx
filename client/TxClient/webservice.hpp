@@ -67,6 +67,14 @@ public:
 	 */
 	QString withdraw(const Withdraw& w);
 
+	/**
+	 * @brief Realize the deposit method in the server based
+	 *        on object Deposit `d`
+	 * @param d The deposit object that represents the method
+	 * @return A status message from the server
+	 */
+	QString deposit(const Deposit& d);
+
 private:
 	std::string ip;
 	short port;
