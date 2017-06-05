@@ -17,6 +17,7 @@ public:
 
 private:
 	Ui::TxClientView *ui;
+	QString user_cpf;
 };
 
 #endif // TXCLIENTVIEW_H
