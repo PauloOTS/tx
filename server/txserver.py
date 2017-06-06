@@ -178,4 +178,4 @@ def transaction():
         return txerror(error.msg, error.code)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, threaded=True)

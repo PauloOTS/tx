@@ -60,27 +60,28 @@ def withdraw(account, value, method):
     if value <= 0:
         raise ControlError('The withdraw value cannot be 0 or less', 400)
 
-    if method == 'current':
-        if value > account.balance:
-            raise ControlError(
-                    'The account %d does not have the money to withdraw'
-                    % account.id, 400)
-        else:
-            account.balance -= value
-            session.commit()
+    with account.lock:
+        if method == 'current':
+            if value > account.balance:
+                raise ControlError(
+                        'The account %d does not have the money to withdraw'
+                        % account.id, 400)
+            else:
+                account.balance -= value
+                session.commit()
 
-    elif method == 'saving':
-        if value > account.saving:
-            raise ControlError(
-                    'The account %d does not have the money to withdraw'
-                    % account.id, 400)
-        else:
-            account.saving -= value
-            session.commit()
+        elif method == 'saving':
+            if value > account.saving:
+                raise ControlError(
+                        'The account %d does not have the money to withdraw'
+                        % account.id, 400)
+            else:
+                account.saving -= value
+                session.commit()
 
-    else:
-        raise ControlError(
-                'The withdraw method must be saving or current', 400)
+        else:
+            raise ControlError(
+                    'The withdraw method must be saving or current', 400)
 
 
 ## Realize the withdraw of `value` in `account` using
@@ -93,17 +94,18 @@ def deposit(account, value, method):
     if value <= 0:
         raise ControlError('The deposit value cannot be 0 or less', 400)
 
-    if method == 'current':
-        account.balance += value
-        session.commit()
+    with account.lock:
+        if method == 'current':
+            account.balance += value
+            session.commit()
 
-    elif method == 'saving':
-        account.saving += value
-        session.commit()
+        elif method == 'saving':
+            account.saving += value
+            session.commit()
 
-    else:
-        raise ControlError(
-                'The deposit method must be saving or current', 400)
+        else:
+            raise ControlError(
+                    'The deposit method must be saving or current', 400)
 
 
 ## Realize a transaction from `sender` to `receiver` of value `value`
@@ -124,16 +126,17 @@ def transaction(sender, receiver, sender_method, receiver_method, value):
     if receiver_method == 'current':
         receiver_method = 'balance'
 
-    sender_amount = getattr(sender, sender_method)
+    with sender.lock:
+        sender_amount = getattr(sender, sender_method)
 
-    if sender_amount < value:
-        raise ControlError(
-                'The account %d does not have the money to transact'
-                % sender.id, 400)
+        if sender_amount < value:
+            raise ControlError(
+                    'The account %d does not have the money to transact'
+                    % sender.id, 400)
 
-    setattr(sender, sender_method, sender_amount - value)
-    setattr(receiver, receiver_method,
-            getattr(receiver, receiver_method) + value)
+        setattr(sender, sender_method, sender_amount - value)
+        setattr(receiver, receiver_method,
+                getattr(receiver, receiver_method) + value)
 
-    session.commit()
+        session.commit()
 

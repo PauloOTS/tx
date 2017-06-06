@@ -15,6 +15,12 @@ public:
 	bool write(QJsonObject& json) const;
 	QList<Account> accounts;
 
+	QString getCpf() const;
+	void setCpf(const QString &value);
+
+	QString getName() const;
+	void setName(const QString &value);
+
 private:
 	static const QString JSON_TYPE;
 	QString cpf;

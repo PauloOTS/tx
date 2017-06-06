@@ -2,6 +2,8 @@ import tx.db as db
 import sqlalchemy.orm
 import sqlalchemy as sql
 
+import threading
+
 class Client(db.base):
     __tablename__ = 'clients'
 
@@ -59,6 +61,10 @@ class Account(db.base):
 
     client  = sql.orm.relationship('Client', back_populates='accounts')
     branch  = sql.orm.relationship('Branch', back_populates='accounts', uselist=False)
+
+    @sql.orm.reconstructor
+    def create_lock(self):
+        self.lock = threading.Lock()
 
     def __json__(self):
         return {
