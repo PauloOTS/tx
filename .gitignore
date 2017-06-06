@@ -109,3 +109,6 @@ server/tx.db
 # qtcreator
 *.user
 *.user.*
+
+# vim
+*.swp
