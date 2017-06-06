@@ -83,6 +83,7 @@ def clients(cpf):
 
 @app.route('/withdraw', methods=['PUT'])
 def withdraw():
+    print('data: ', str(flask.request.get_data(), errors='ignore'))
     withdraw_request = json.loads(flask.request.get_data())
 
     if( not 'type' in withdraw_request or
@@ -178,4 +179,4 @@ def transaction():
         return txerror(error.msg, error.code)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, threaded=True)

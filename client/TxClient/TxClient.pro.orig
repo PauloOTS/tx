@@ -31,15 +31,21 @@ SOURCES += main.cpp\
     account.cpp \
     deposit.cpp \
     withdraw.cpp \
-    transaction.cpp \
+<<<<<<< HEAD
+    transaction.cpp
+=======
     webservice.cpp
+>>>>>>> cf7463be8e02ad888c83b47f2f7ae5768d503507
 
 HEADERS  += txclientview.h \
     client.h \
     account.h \
     deposit.h \
     withdraw.h \
-    transaction.h \
+<<<<<<< HEAD
+    transaction.h
+=======
     webservice.hpp
+>>>>>>> cf7463be8e02ad888c83b47f2f7ae5768d503507
 
 FORMS    += txclientview.ui

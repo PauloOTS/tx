@@ -4,10 +4,12 @@ const QString Deposit::JSON_TYPE = "deposit";
 
 Deposit::Deposit()
 {
-
 }
 
-Deposit::Deposit(const int& account_id, const double& value, const QString& deposit_method){
+Deposit::Deposit(
+	const int& account_id,
+	const double& value,
+	const QString& deposit_method){
 
 	this->account_id = account_id;
 	this->value = value;

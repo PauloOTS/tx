@@ -58,3 +58,23 @@ bool Client::write(QJsonObject &json) const{
 	json["accounts"] = JArray;
 	return true;
 }
+
+QString Client::getCpf() const
+{
+    return cpf;
+}
+
+void Client::setCpf(const QString &value)
+{
+    cpf = value;
+}
+
+QString Client::getName() const
+{
+    return name;
+}
+
+void Client::setName(const QString &value)
+{
+    name = value;
+}

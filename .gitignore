@@ -100,7 +100,15 @@ ENV/
 
 # qtBuilder
 
-/client/build/
+client/build/
+client/test/
 
 # db 
 server/tx.db
+
+# qtcreator
+*.user
+*.user.*
+
+# vim
+*.swp
