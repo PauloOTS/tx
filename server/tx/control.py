@@ -121,10 +121,11 @@ def transaction(sender, receiver, sender_method, receiver_method, value):
         raise ControlError(
                 'The transaction method must be saving or current', 400)
 
-    if sender == receiver:
+    if receiver_method == sender_method and sender == receiver:
         raise ControlError(
                 'The sender and the receiver of a transaction '
-                'must be different!', 400)
+                'with the same type (%s) '
+                'must be different!' % receiver_method, 400)
 
     if sender_method == 'current':
         sender_method = 'balance'
