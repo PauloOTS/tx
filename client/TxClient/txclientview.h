@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QList>
+#include <QTableWidgetItem>
 #include "webservice.hpp"
 
 namespace Ui {
@@ -32,6 +33,10 @@ private:
 	QString user_cpf;
 	WebService* web_service;
 	Client c;
+
+	static QTableWidgetItem* createTableItem(const QString& value);
+	static QTableWidgetItem* createTableItem(int value);
+	static QTableWidgetItem* createTableItem(double value);
 
 };
 
