@@ -4,5 +4,5 @@
 	"receiver_id" : "1",
 	"sender_method" : "saving",
 	"receiver_method" : "current",
-	"value" : 100.0
+	"value" : 1.0
 }

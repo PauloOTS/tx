@@ -4,8 +4,11 @@
 
 import tx.db
 import tx.model
+import threading
 
 session = tx.db.newsession()
+
+transaction_lock = threading.Lock()
 
 class ControlError(BaseException):
 
@@ -132,17 +135,23 @@ def transaction(sender, receiver, sender_method, receiver_method, value):
     if receiver_method == 'current':
         receiver_method = 'balance'
 
-    with sender.lock:
-        sender_amount = getattr(sender, sender_method)
+    with transaction_lock:
+        sender.lock.acquire()
+        receiver.lock.acquire()
 
-        if sender_amount < value:
-            raise ControlError(
-                    'The account %d does not have the money to transact'
-                    % sender.id, 400)
+    sender_amount = getattr(sender, sender_method)
 
-        setattr(sender, sender_method, sender_amount - value)
-        setattr(receiver, receiver_method,
-                getattr(receiver, receiver_method) + value)
+    if sender_amount < value:
+        raise ControlError(
+                'The account %d does not have the money to transact'
+                % sender.id, 400)
 
-        session.commit()
+    setattr(sender, sender_method, sender_amount - value)
+    setattr(receiver, receiver_method,
+            getattr(receiver, receiver_method) + value)
+
+    session.commit()
+
+    sender.lock.release()
+    receiver.lock.release()
 
