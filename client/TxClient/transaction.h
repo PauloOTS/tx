@@ -3,6 +3,9 @@
 #include <QString>
 #include <QJsonObject>
 
+/**
+ * @brief Class to serialize the transaction web-service request
+ */
 class Transaction
 {
 public:
@@ -13,7 +16,18 @@ public:
 		    const QString& receiver_method,
 		    const double& value);
 
+	/**
+	 * @brief Function to atualize Transaction class based on a Json
+	 * @param json Json object
+	 * @return success or fail
+	 */
 	bool read(const QJsonObject& json);
+
+	/**
+	 * @brief Function to write into a Json the transaction class
+	 * @param json Json object
+	 * @return success or fail
+	 */
 	bool write(QJsonObject& json) const;
 
 private:

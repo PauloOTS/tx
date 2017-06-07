@@ -25,9 +25,24 @@ private slots:
 
 	void on_btnTransaction_clicked();
 
+	void on_btnRefresh_clicked();
+
 private:
+	/**
+	 * @brief Function to initialize table
+	 */
 	void initializeTable();
+
+	/**
+	 * @brief Function to initialize combo boxes
+	 */
+
 	void initializeComboBoxes();
+
+	/**
+	 * @brief Function to atualize table
+	 */
+
 	void atualizeTable();
 	Ui::TxClientView *ui;
 	QString user_cpf;

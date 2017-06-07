@@ -9,8 +9,10 @@ TxClientView::TxClientView(QWidget *parent) :
 {
 	ui->setupUi(this);
 
+	// Initialize web service
 	this->web_service = new WebService("localhost", 5000);
 
+	// Loop to verify user cpf input
 	while(1){
 		bool ok;
 
@@ -210,6 +212,14 @@ try{
 
 	QString r = this->web_service->transaction(t);
 	QMessageBox::information(this, "Result", r, QMessageBox::Ok);
+	this->atualizeTable();
+}catch(WebServiceError& e){
+	QMessageBox::critical(this, tr("Error"), e.msg);
+}
+
+void TxClientView::on_btnRefresh_clicked()
+try{
+	this->c = this->web_service->getClient(this->user_cpf);
 	this->atualizeTable();
 }catch(WebServiceError& e){
 	QMessageBox::critical(this, tr("Error"), e.msg);

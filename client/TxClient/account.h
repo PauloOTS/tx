@@ -3,6 +3,10 @@
 #include "client.h"
 #include <QJsonObject>
 
+/**
+ * @brief Account model
+ */
+
 class Account
 {
 public:
@@ -14,8 +18,19 @@ public:
 		const QString& bank_name,
 		const double& balance,
 		const double& saving);
-		
+
+	/**
+	 * @brief Function to atualize Account class based on a Json
+	 * @param json Json object
+	 * @return success or fail
+	 */
 	bool read(const QJsonObject& json);
+
+	/**
+	 * @brief Function to write into a Json the account class
+	 * @param json Json object
+	 * @return success or fail
+	 */
 	bool write(QJsonObject& json) const;
 	
 	int getId() const;

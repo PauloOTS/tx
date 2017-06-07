@@ -11,7 +11,19 @@ class Client
 public:
 	Client();
 	Client(const QString& cpf, const QString& name);
+
+	/**
+	 * @brief Function to atualize Client class based on a Json
+	 * @param json Json object
+	 * @return success or fail
+	 */
 	bool read(const QJsonObject& json);
+
+	/**
+	 * @brief Function to write into a Json the client class
+	 * @param json Json object
+	 * @return success or fail
+	 */
 	bool write(QJsonObject& json) const;
 	QList<Account> accounts;
 
