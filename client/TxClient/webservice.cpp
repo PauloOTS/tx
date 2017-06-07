@@ -56,6 +56,7 @@ QString WebService::withdraw(const Withdraw &w)
 	QJsonObject withdraw_request;
 	w.write(withdraw_request);
 
+	qDebug().noquote() << QJsonDocument(withdraw_request).toJson();
 	const std::string path = "/withdraw";
 	std::string j = jsonToStr(withdraw_request);
 	QJsonObject response = requestJson(path, "PUT", j);
@@ -71,6 +72,18 @@ QString WebService::deposit(const Deposit& d)
 	const std::string path = "/deposit";
 	std::string j = jsonToStr(deposit_request);
 	QJsonObject response = requestJson(path, "PUT", j);
+
+	return response["status"].toString();
+}
+
+QString WebService::transaction(const Transaction &t){
+	QJsonObject transaction_request;
+	t.write(transaction_request);
+
+	qDebug().noquote() << QJsonDocument(transaction_request).toJson();
+	const std::string path = "/transaction";
+	std::string j = jsonToStr(transaction_request);
+	QJsonObject response = requestJson(path, "POST", j);
 
 	return response["status"].toString();
 }

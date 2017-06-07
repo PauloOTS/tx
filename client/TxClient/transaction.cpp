@@ -32,7 +32,7 @@ bool Transaction::read(const QJsonObject &json){
 	return true;
 }
 
-bool Transaction::write(QJsonObject &json){
+bool Transaction::write(QJsonObject &json) const{
 
 
 	json["type"] = Transaction::JSON_TYPE;

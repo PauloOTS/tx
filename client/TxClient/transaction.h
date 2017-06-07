@@ -14,7 +14,7 @@ public:
 		    const double& value);
 
 	bool read(const QJsonObject& json);
-	bool write(QJsonObject& json);
+	bool write(QJsonObject& json) const;
 
 private:
 	static const QString JSON_TYPE;

@@ -7,6 +7,7 @@
 #include "client.h"
 #include "deposit.h"
 #include "withdraw.h"
+#include "transaction.h"
 
 #include <curlpp/cURLpp.hpp>
 #include <curlpp/Easy.hpp>
@@ -74,6 +75,14 @@ public:
 	 * @return A status message from the server
 	 */
 	QString deposit(const Deposit& d);
+
+	/**
+	 * @brief Realize the transaction to another user based on oject Transaction 't'
+	 * @param t The transaction oject that represents the method
+	 * @return  A status message from the server.
+	 */
+
+	QString transaction(const Transaction& t);
 
 private:
 	std::string ip;

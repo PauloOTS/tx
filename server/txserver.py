@@ -83,8 +83,8 @@ def clients(cpf):
 
 @app.route('/withdraw', methods=['PUT'])
 def withdraw():
-    print('data: ', str(flask.request.get_data(), errors='ignore'))
-    withdraw_request = json.loads(flask.request.get_data())
+    #print('data: ', str(flask.request.get_data(), errors='ignore'))
+    withdraw_request = json.loads(flask.request.get_data().decode('utf-8'))
 
     if( not 'type' in withdraw_request or
         withdraw_request['type'] != 'withdraw' or

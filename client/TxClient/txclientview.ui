@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>612</width>
-    <height>419</height>
+    <width>645</width>
+    <height>462</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -42,6 +42,9 @@
        </item>
        <item>
         <widget class="QLineEdit" name="lineDeposit"/>
+       </item>
+       <item>
+        <widget class="QComboBox" name="comboDeposit"/>
        </item>
        <item>
         <widget class="QPushButton" name="btnDeposit">
@@ -81,6 +84,9 @@
        </item>
        <item>
         <widget class="QLineEdit" name="lineWithdraw"/>
+       </item>
+       <item>
+        <widget class="QComboBox" name="comboWithdraw"/>
        </item>
        <item>
         <widget class="QPushButton" name="btnWithdraw">
@@ -181,15 +187,16 @@
        <item row="1" column="1">
         <widget class="QLineEdit" name="lineReceiver"/>
        </item>
+       <item row="0" column="2">
+        <widget class="QComboBox" name="ComboSender"/>
+       </item>
+       <item row="1" column="2">
+        <widget class="QComboBox" name="comboReceiver"/>
+       </item>
       </layout>
      </widget>
     </item>
    </layout>
-   <zorder>label</zorder>
-   <zorder>groupBox</zorder>
-   <zorder>groupBox_2</zorder>
-   <zorder>groupBox_3</zorder>
-   <zorder>groupBox_4</zorder>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
