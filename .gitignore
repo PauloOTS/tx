@@ -100,7 +100,7 @@ ENV/
 
 # qtBuilder
 
-client/build/
+client/build*
 client/test/
 
 # db 
