@@ -12,28 +12,37 @@ TxClientView::TxClientView(QWidget *parent) :
 	this->web_service = new WebService("localhost", 5000);
 
 	while(1){
+		bool ok;
+
 		this->user_cpf = QInputDialog::getText(
 					this,
 					"Welcome!",
-					"Input your cpf:");
+					"Input your cpf:",
+					QLineEdit::Normal,
+					QString(),
+					&ok);
 
-		if (this->user_cpf != ""){
+		if(ok){
+			if (this->user_cpf != ""){
 
-			try {
-				this->c = this	->web_service
-						->getClient(this->user_cpf);
+				try {
+					this->c = this	->web_service
+							->getClient(this->user_cpf);
 
-			}catch(WebServiceError& e){
-				QMessageBox::critical(this, tr("Error"), e.msg);
-				continue;
+				}catch(WebServiceError& e){
+					QMessageBox::critical(this, tr("Error"), e.msg);
+					continue;
+				}
+				break;
+			}else{
+				QMessageBox::critical(
+					this,
+					tr("Error"),
+					tr("Insert a valid username."));
 			}
-			break;
+		}else{
+			exit(EXIT_SUCCESS);
 		}
-
-		QMessageBox::critical(
-			this,
-			tr("Error"),
-			tr("Insert a valid username."));
 	}
 
 	this->initializeTable();
@@ -152,7 +161,9 @@ TxClientView::~TxClientView()
 
 void TxClientView::on_btnDeposit_clicked()
 try{
-	int i = ui->tableAccounts->itemAt(0, ui->tableAccounts->currentRow())->text().toInt();
+	int i = ui->tableAccounts
+		->item(ui->tableAccounts->currentRow(), 0)
+		->text().toInt();
 	double d = ui->lineDeposit->text().toDouble();
 	QString s = ui->comboDeposit->currentText().toLower();
 	Deposit dep(i, d, s);
@@ -169,7 +180,7 @@ try{
 void TxClientView::on_btnWithdraw_clicked()
 try{
 	int i = ui->tableAccounts
-		->itemAt(0, ui->tableAccounts->currentRow())
+		->item(ui->tableAccounts->currentRow(), 0)
 		->text().toInt();
 
 	double d = ui->lineWithdraw->text().toDouble();
@@ -188,7 +199,7 @@ void TxClientView::on_btnTransaction_clicked()
 try{
 	int s_id = ui
 		->tableAccounts
-		->itemAt(0, ui->tableAccounts->currentRow())
+		->item(ui->tableAccounts->currentRow(), 0)
 		->text().toInt();
 
 	int r_id = ui->lineReceiver->text().toInt();
